@@ -10,18 +10,18 @@ collect_informations()
     MEMTOTAL=$(( $(awk -F" " '/^MemTotal/ {print $2}' </proc/meminfo) / 1024 ))
     ARCH=$(lscpu | awk '/Architecture/ {print $2}')
     RTC=$(awk '/rtc0/ {print $(NF)}' <"${TMPFILE}")
-    HB_PCI=$(grep '16c3:abcd' "${TMPFILE}")
+    HB_PCI=$(grep '16c3:abcd' "${TMPFILE}") || HB_PCI=""
     HARDWARE=$(awk '/Hardware/ {print $3}' </proc/cpuinfo)
     [ "X${HARDWARE}" = "XAllwinner" ] && HARDWARE=$(awk '/Hardware/ {print $4}' </proc/cpuinfo)
-    GMAC=$(grep "sun6i_gmac" "${TMPFILE}")$(grep "gmac0-" "${TMPFILE}")
+    GMAC=$(grep "sun6i_gmac" "${TMPFILE}")$(grep "gmac0-" "${TMPFILE}") || GMAC=""
     SUN8IPHY="$(awk -F"PHY ID " '/PHY ID / {print $2}' <"${TMPFILE}")"
-    LEDS=$(grep "green:ph02:led1" "${TMPFILE}")
-    TERMINUS=$(lsusb | grep -i "1a40:0101")
-    GL830=$(lsusb | grep -i "05e3:0718")
-    SWITCH=$(grep "BCM53125" "${TMPFILE}")
-    INTERUPT=$(grep "eth0" /proc/interrupts)
-    WIFI8189ES=$(lsmod | grep 8189es | grep -v "0 $" | grep -v "0$") # ignore when not loaded
-    WIFIAP6211=$(lsmod | grep ap6211)
+    LEDS=$(grep "green:ph02:led1" "${TMPFILE}") || LEDS=""
+    TERMINUS=$(lsusb | grep -i "1a40:0101") || TERMINUS=""
+    #GL830=$(lsusb | grep -i "05e3:0718")
+    SWITCH=$(grep "BCM53125" "${TMPFILE}") || SWITCH=""
+   # INTERUPT=$(grep "eth0" /proc/interrupts)
+    WIFI8189ES=$(lsmod | grep 8189es | grep -v "0 $" | grep -v "0$") || WIFI8189ES="" # ignore when not loaded
+    WIFIAP6211=$(lsmod | grep ap6211) || WIFIAP6211=""
     read VERSION </proc/version
 } # collect_informations
 
@@ -187,7 +187,9 @@ detect_board()
         fi
     fi
 
-    [ -f /proc/device-tree/model ] && read MACHINE </proc/device-tree/model
+    if [ -f /proc/device-tree/model ]; then
+        MACHINE=$(cat /proc/device-tree/model)
+    fi
     
     if [[ $MACHINE == *LIME2 ]]; then 
         BOARD_TYPE="Olimex" 
