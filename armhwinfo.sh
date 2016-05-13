@@ -39,7 +39,7 @@ detect_board()
             # Raspberry Pi
             BCM2709)
                 REVISION=$(cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//')
-                BOARD_TYPE="Rapsberry Pi"
+                BOARD_TYPE="Raspberry Pi"
                 case $REVISION in
                     a02082|a22082)
                         BOARD_VERSION="3"
