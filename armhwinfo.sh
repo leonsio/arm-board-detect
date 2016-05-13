@@ -99,8 +99,11 @@ detect_board()
                             if [ ${CORES} -eq 4 ]; then
                                 BOARD_TYPE="Orange Pi+"
                                 BOARD_VERSION="2"
+                            elif [ ${CORES} -eq 8 ]; then
+                                BOARD_TYPE="Banana Pi"
+                                BOARD_VERSION="M3"
                             else
-                                BOARD_TYPE="Unknown Hardware" # Banana Pi M3
+                                BOARD_TYPE="Unknown Hardware"
                             fi
                         fi
     
