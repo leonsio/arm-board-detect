@@ -29,13 +29,16 @@ collect_informations()
 detect_board() 
 {
     BOARD_VERSION=""
-    if [ "$ARCH" = "armv7l" ]; then
+    if [ "$ARCH" = "armv6l" ]; then
         case $HARDWARE in
             # Raspberry Pi (@todo detect revisions)
             BCM2708)
                 BOARD_TYPE="Raspberry Pi"
                 BOARD_VERSION="1"
                 ;;
+	esac
+    elif [ "$ARCH" = "armv7l" ]; then
+        case $HARDWARE in
             # Raspberry Pi
             BCM2709)
                 REVISION=$(cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//')
