@@ -40,18 +40,21 @@ detect_board()
     elif [ "$ARCH" = "armv7l" ]; then
         case $HARDWARE in
             # Raspberry Pi
-            BCM2709)
+            BCM2709|BCM2835)
                 REVISION=$(cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//')
                 BOARD_TYPE="Raspberry Pi"
                 case $REVISION in
                     a02082|a22082)
                         BOARD_VERSION="3"
                         ;;
-                    a01041|a21041)
+                    a01041|a21041|a22042)
                         BOARD_VERSION="2"
                         ;;
-                    900092)
+                    900092|900093)
                         BOARD_VERSION="Zero"
+                        ;;
+                    9000C1)
+                        BOARD_VERSION="Zero W"
                         ;;
                 esac
                 ;;
@@ -146,6 +149,11 @@ detect_board()
             ODROID*)
                 BOARD_TYPE="Odroid"
                 BOARD_VERSION=$(echo ${HARDWARE} | sed 's/ODROID-\?//')
+                ;;
+            Rockchip*)
+                # @todo and many other with rk3288 and 2 gb ram..
+                BOARD_TYPE="ASUS"
+                BOARD_VERSION="Tinker Board"
                 ;;
             Marvell)
                 BOARD_TYPE="Marvell"
