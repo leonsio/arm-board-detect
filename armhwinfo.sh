@@ -31,20 +31,37 @@ detect_board()
     BOARD_VERSION=""
     if [ "$ARCH" = "armv6l" ]; then
         case $HARDWARE in
-            # Raspberry Pi (@todo detect revisions)
             BCM2708)
                 BOARD_TYPE="Raspberry Pi"
                 BOARD_VERSION="1"
+                ;;
+            BCM2835)
+                REVISION=$(cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//')
+                BOARD_TYPE="Raspberry Pi"
+                case $REVISION in
+                    0012|0015|900021)
+                        BOARD_VERSION="A+"
+                        ;;
+                    0010|0013|900032)
+                        BOARD_VERSION="B+"
+                        ;;
+                    900092|900093)
+                        BOARD_VERSION="Zero"
+                        ;;
+                    9000c1)
+                        BOARD_VERSION="Zero W"
+                        ;;
+                esac
                 ;;
 	esac
     elif [ "$ARCH" = "armv7l" ]; then
         case $HARDWARE in
             # Raspberry Pi
-            BCM2709|BCM2835)
+            BCM2709|BCM2835|BCM2836|BCM2837)
                 REVISION=$(cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//')
                 BOARD_TYPE="Raspberry Pi"
                 case $REVISION in
-                    a02082|a22082)
+                    a02082|a22082|a32082)
                         BOARD_VERSION="3"
                         ;;
                     a01041|a21041|a22042)
