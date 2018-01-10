@@ -216,7 +216,7 @@ detect_board()
     fi
 
     if [ -f /proc/device-tree/model ]; then
-        MACHINE=$(cat /proc/device-tree/model)
+        MACHINE=$(cat /proc/device-tree/model | tr '\0' '\n' )
     fi
     
     if [[ $MACHINE == *LIME2 ]]; then 
