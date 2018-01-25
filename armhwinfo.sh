@@ -202,11 +202,11 @@ detect_board()
             
         esac
     elif [ "$ARCH" = "aarch64" ]; then
-        if [ $HARDWARE = "ODROID-C2" ]; then
+        if [ "$HARDWARE" = "ODROID-C2" ]; then
             BOARD_TYPE="Odroid"
             BOARD_VERSION=$(echo ${HARDWARE} | sed 's/ODROID-\?//')
         fi
-        if [ $HARDWARE = "sun50iw1p1" ]; then
+        if [ "$HARDWARE" = "sun50iw1p1" ]; then
             if [ $MEMTOTAL -gt 600 ]; then
                 BOARD_TYPE="Pine64+"                
             else 
@@ -222,6 +222,11 @@ detect_board()
     if [[ $MACHINE == *LIME2 ]]; then 
         BOARD_TYPE="Olimex" 
         BOARD_VERSION="Lime 2" 
+    fi
+    if [[ $MACHINE == *Rock64 ]]; then
+        BOARD_TYPE="Rock64"
+        #todo BOARD_VERSION -> 1/2/4GB RAM?
+        # ROCK64 has 128mbit spi, renegade ??
     fi
     if [[ $MACHINE == *LIME ]]; then 
         BOARD_TYPE="Olimex" 
