@@ -224,7 +224,11 @@ detect_board()
         BOARD_VERSION="Lime 2" 
     fi
     if [[ $MACHINE == *Rock64 ]]; then
-        BOARD_TYPE="Rock64"
+        SPI_SIZE=$(dmesg | grep m25p80 | cut -d"(" -f2 | awk '{print $1}')
+        if [ "$SPI_SIZE" = "16384" ]
+        then
+            BOARD_TYPE="Rock64"
+        fi
         #todo BOARD_VERSION -> 1/2/4GB RAM?
         # ROCK64 has 128mbit spi, renegade ??
     fi
