@@ -16,7 +16,10 @@ collect_informations()
     GMAC=$(grep "sun6i_gmac" "${TMPFILE}")$(grep "gmac0-" "${TMPFILE}") || GMAC=""
     SUN8IPHY="$(awk -F"PHY ID " '/PHY ID / {print $2}' <"${TMPFILE}")"
     LEDS=$(grep "green:ph02:led1" "${TMPFILE}") || LEDS=""
-    TERMINUS=$(lsusb | grep -i "1a40:0101") || TERMINUS=""
+    if [ -f /usr/bin/lsusb ]
+    then
+    	TERMINUS=$(lsusb | grep -i "1a40:0101") || TERMINUS=""
+    fi
     #GL830=$(lsusb | grep -i "05e3:0718")
     SWITCH=$(grep "BCM53125" "${TMPFILE}") || SWITCH=""
    # INTERUPT=$(grep "eth0" /proc/interrupts)
@@ -201,6 +204,7 @@ detect_board()
                 fi
             
         esac
+	# todo rewrite to detect new H6 boards
     elif [ "$ARCH" = "aarch64" ]; then
         if [ "$HARDWARE" = "ODROID-C2" ]; then
             BOARD_TYPE="Odroid"
@@ -213,6 +217,10 @@ detect_board()
                 BOARD_TYPE="Pine64"
             fi
         fi
+	if [ "$HARDWARE" = "sun50iw6" ]; then
+		BOARD_TYPE="OrangePi"
+		BOARD_VERSION="One Plus"
+	fi
     fi
 
     if [ -f /proc/device-tree/model ]; then
