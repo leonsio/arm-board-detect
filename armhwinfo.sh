@@ -22,7 +22,7 @@ collect_informations()
     then
     	TERMINUS=$(lsusb | grep -i "1a40:0101") || TERMINUS=""
     fi
-    GL830=$(lsusb | grep -i "05e3:0718")
+    GL830=$(lsusb | grep -i "05e3:0718") || GL830=""
     SWITCH=$(grep "BCM53125" "${TMPFILE}") || SWITCH=""
    # INTERUPT=$(grep "eth0" /proc/interrupts)
     WIFI8189ES=$(lsmod | grep 8189es | grep -v "0 $" | grep -v "0$") || WIFI8189ES="" # ignore when not loaded
